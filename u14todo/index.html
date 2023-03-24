@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="zh"><head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="../bootstrap530.css">
+  <script src="https://unpkg.com/vue@next"></script>
+  <title>todo</title>
+  <style>
+  body {
+    background: linear-gradient(90deg, #57f, #5f7);
+  }
+  .wrap{
+    width: 620px;
+  }
+  i{
+    cursor: pointer;
+    margin: 0 2px;
+    font-size: medium;
+    color: darkgoldenrod;
+  }
+  section>div>i{
+    font-size: larger;
+  }
+  section{
+    animation: scaleUp 0.3s forwards;
+  }
+  footer>section>div:first-child{
+    text-decoration: line-through;
+  }
+  @keyframes scaleUp{
+    from {transform: scale(0);}
+    to {transform: scale(1);}
+  }
+  </style>
+</head>
+<body><div class="wrap bg-light p-3 m-auto" id="app">
+
+<h1 class="bg-warning lh-lg text-center">Todo List</h1>
+<form class="row g-0">
+  <div class="col-6">
+    <label for="task">新增task:</label><br>
+    <input type="text" class="fw-bold fs-5 lh-1" v-model="urInput.task" size="24" autofocus></input>
+  </div>
+  <div class="col-4">
+    <label for="duedate">due date：</label><br>
+    <input type="number" min="2023" max="2028" v-model="urInput.yy">
+    <input type="number" min="1" max="12" v-model="urInput.mm">
+    <input type="number" min="1" max="31" v-model="urInput.dd">
+  </div>
+  <div class="col-2">
+    <label for="tag">tag：</label><br>
+    <input type="text" size="3" v-model="urInput.tag">
+    <button class="bg-warning " type="button" @click="addTo">Add</button>
+  </div>
+</form>
+
+<main v-if="myList.length>0">
+  <hr class="border-4">
+  <h5 class="row g-0 text-primary fw-bold">
+    <div class="col-7">　事項
+      <i class="fa-solid fa-arrow-up-wide-short" @click="mergeBy('task')"></i>
+      <i class="fa-solid fa-arrow-down-short-wide" @click="orderBy('task')"></i>
+    </div>
+    <div class="col-2">期程
+      <i class="fa-solid fa-arrow-up-wide-short" @click="mergeBy('date')"></i>
+      <i class="fa-solid fa-arrow-down-short-wide" @click="orderBy('date')"></i>
+    </div>
+    <div class="col-2">類
+      <i class="fa-solid fa-arrow-up-wide-short" @click="mergeBy('tag')"></i>
+      <i class="fa-solid fa-arrow-down-short-wide" @click="orderBy('tag')"></i>
+    </div>
+    <div class="col-1">編刪</div>
+    <hr>
+  </h5>
+
+  <article v-for="(myList, index) in myList" :key="index">
+    <section class="row g-0" v-if="!myList.completed">
+      <div class="col-7 mb-3 ">
+        <input type="checkbox" style="zoom:160%" v-model="myList.completed" @change="storeTo">
+        {{myList.task}}
+      </div>
+      <div class="col-2 text-success">
+        {{myList.yy}}/ {{myList.mm}}/ {{myList.dd}}
+      </div>
+      <div class="col-2 text-center">{{myList.tag}}</div>
+      <div class="col-1">
+        <i class="fa-solid fa-pen-to-square" @click="toEdit(index)"></i>
+        <i class="fa-solid fa-trash" @click="toRemove(index)"></i>
+      </div>
+    </section>
+  </article>
+
+  <hr class="border-3">
+  <h3 class="bg-body-secondary mb-0 py-1 ">已完成：</h3>
+  <footer v-for="(myList, index) in myList" :key="index" class="bg-body-secondary">
+    <section class="row g-0" v-if="myList.completed">
+      <div class="col-7 mb-3 ">
+        <input type="checkbox" style="zoom:160%" v-model="myList.completed" @change="storeTo">
+        {{myList.task}}
+      </div>
+      <div class="col-2 text-success">
+        {{myList.yy}}/ {{myList.mm}}/ {{myList.dd}}
+      </div>
+      <div class="col-2 text-center">{{myList.tag}}</div>
+      <div class="col-1">
+        <i class="fa-solid fa-pen-to-square" @click="toEdit(index)"></i>
+        <i class="fa-solid fa-trash" @click="toRemove(index)"></i>
+      </div>
+    </section>
+  </footer>
+</main>
+
+</div></body>
+
+<script src="u14c.js"></script>
+
+</html>
